@@ -1,6 +1,6 @@
-import { Clock, BookOpen } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { Course } from '../data/courses';
+import { Clock, BookOpen } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Course } from "../../data/courses";
 
 interface CourseCardProps {
   course: Course;
@@ -16,9 +16,9 @@ export default function CourseCard({ course }: CourseCardProps) {
         <div className="flex items-center justify-between mb-3">
           <span
             className={`px-3 py-1 rounded-full text-xs font-semibold ${
-              course.level === 'Algo1'
-                ? 'bg-green-100 text-green-800'
-                : 'bg-orange-100 text-orange-800'
+              course.level === "Algo1"
+                ? "bg-green-100 text-green-800"
+                : "bg-orange-100 text-orange-800"
             }`}
           >
             {course.level}

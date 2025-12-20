@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { CheckCircle, XCircle } from 'lucide-react';
-import { Exercise } from '../data/exercises';
+import { useState } from "react";
+import { CheckCircle, XCircle } from "lucide-react";
+import { Exercise } from "../../data/exercises";
 
 interface QuizProps {
   exercise: Exercise;
@@ -9,20 +9,22 @@ interface QuizProps {
 
 export default function Quiz({ exercise, onComplete }: QuizProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [textAnswer, setTextAnswer] = useState('');
+  const [textAnswer, setTextAnswer] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
 
   const handleSubmit = () => {
-    if (exercise.type === 'qcm') {
+    if (exercise.type === "qcm") {
       const correct = selectedAnswer === exercise.correctAnswer;
       setIsCorrect(correct);
       setSubmitted(true);
       if (correct) {
         setTimeout(onComplete, 1500);
       }
-    } else if (exercise.type === 'quiz') {
-      const correct = textAnswer.trim().toLowerCase() === String(exercise.correctAnswer).toLowerCase();
+    } else if (exercise.type === "quiz") {
+      const correct =
+        textAnswer.trim().toLowerCase() ===
+        String(exercise.correctAnswer).toLowerCase();
       setIsCorrect(correct);
       setSubmitted(true);
       if (correct) {
@@ -33,19 +35,23 @@ export default function Quiz({ exercise, onComplete }: QuizProps) {
 
   const handleReset = () => {
     setSelectedAnswer(null);
-    setTextAnswer('');
+    setTextAnswer("");
     setSubmitted(false);
     setIsCorrect(false);
   };
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">{exercise.title}</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        {exercise.title}
+      </h2>
       <div className="mb-6">
-        <p className="text-gray-700 whitespace-pre-wrap">{exercise.statement}</p>
+        <p className="text-gray-700 whitespace-pre-wrap">
+          {exercise.statement}
+        </p>
       </div>
 
-      {exercise.type === 'qcm' && exercise.options && (
+      {exercise.type === "qcm" && exercise.options && (
         <div className="space-y-3 mb-6">
           {exercise.options.map((option, index) => (
             <button
@@ -56,28 +62,30 @@ export default function Quiz({ exercise, onComplete }: QuizProps) {
                 selectedAnswer === index
                   ? submitted
                     ? isCorrect
-                      ? 'border-green-500 bg-green-50'
-                      : 'border-red-500 bg-red-50'
-                    : 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
-              } ${submitted ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                      ? "border-green-500 bg-green-50"
+                      : "border-red-500 bg-red-50"
+                    : "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              } ${submitted ? "cursor-not-allowed" : "cursor-pointer"}`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-sm text-gray-900">{option}</span>
-                {submitted && selectedAnswer === index && (
-                  isCorrect ? (
+                <span className="font-mono text-sm text-gray-900">
+                  {option}
+                </span>
+                {submitted &&
+                  selectedAnswer === index &&
+                  (isCorrect ? (
                     <CheckCircle className="w-5 h-5 text-green-600" />
                   ) : (
                     <XCircle className="w-5 h-5 text-red-600" />
-                  )
-                )}
+                  ))}
               </div>
             </button>
           ))}
         </div>
       )}
 
-      {exercise.type === 'quiz' && (
+      {exercise.type === "quiz" && (
         <div className="mb-6">
           <input
             type="text"
@@ -93,7 +101,7 @@ export default function Quiz({ exercise, onComplete }: QuizProps) {
       {submitted && (
         <div
           className={`mb-6 p-4 rounded-lg flex items-center space-x-3 ${
-            isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+            isCorrect ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800"
           }`}
         >
           {isCorrect ? (
@@ -102,7 +110,7 @@ export default function Quiz({ exercise, onComplete }: QuizProps) {
             <XCircle className="w-6 h-6" />
           )}
           <p className="font-medium">
-            {isCorrect ? 'Correct! Well done!' : 'Incorrect. Try again!'}
+            {isCorrect ? "Correct! Well done!" : "Incorrect. Try again!"}
           </p>
         </div>
       )}
@@ -112,8 +120,8 @@ export default function Quiz({ exercise, onComplete }: QuizProps) {
           <button
             onClick={handleSubmit}
             disabled={
-              (exercise.type === 'qcm' && selectedAnswer === null) ||
-              (exercise.type === 'quiz' && !textAnswer.trim())
+              (exercise.type === "qcm" && selectedAnswer === null) ||
+              (exercise.type === "quiz" && !textAnswer.trim())
             }
             className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
           >

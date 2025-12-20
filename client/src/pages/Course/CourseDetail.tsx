@@ -1,6 +1,6 @@
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Clock, BookOpen } from 'lucide-react';
-import { courses } from '../data/courses';
+import { useParams, Link } from "react-router-dom";
+import { ArrowLeft, Clock, BookOpen } from "lucide-react";
+import { courses } from "../../data/courses";
 
 export default function CourseDetail() {
   const { id } = useParams();
@@ -10,7 +10,9 @@ export default function CourseDetail() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Course Not Found</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            Course Not Found
+          </h1>
           <Link to="/courses" className="text-blue-600 hover:text-blue-700">
             Back to Courses
           </Link>
@@ -24,8 +26,8 @@ export default function CourseDetail() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
           to="/courses"
-          className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 mb-8 font-medium"
-        >
+          className="inline-flex items-center gap-2 mb-8 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:bg-green-600 hover:font-bold hover:-translate-z-4 shadow-md hover:shadow-lg" >
+        
           <ArrowLeft className="w-5 h-5" />
           <span>Back to Courses</span>
         </Link>
@@ -35,9 +37,7 @@ export default function CourseDetail() {
             <div className="flex items-center space-x-3 mb-4">
               <span
                 className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                  course.level === 'Algo1'
-                    ? 'bg-green-500'
-                    : 'bg-orange-500'
+                  course.level === "Algo1" ? "bg-green-500" : "bg-orange-500"
                 }`}
               >
                 {course.level}
@@ -76,14 +76,22 @@ export default function CourseDetail() {
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
             >
               <div className="bg-gray-50 px-6 py-4 border-b">
-                <h2 className="text-2xl font-bold text-gray-900">{item.section}</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {item.section}
+                </h2>
               </div>
 
               <div className="px-6 py-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Theory</h3>
-                <p className="text-gray-700 leading-relaxed mb-6">{item.theory}</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                  Theory
+                </h3>
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  {item.theory}
+                </p>
 
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Code Example</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                  Code Example
+                </h3>
                 <div className="bg-gray-900 rounded-lg overflow-hidden">
                   <div className="bg-gray-800 px-4 py-2 flex items-center space-x-2">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -108,7 +116,7 @@ export default function CourseDetail() {
           </p>
           <Link
             to="/exercises"
-            className="inline-block px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            className="inline-block px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold duration-200 hover:bg-green-600 hover:font-bold hover:text-white transition-colors"
           >
             Go to Exercises
           </Link>

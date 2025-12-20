@@ -1,5 +1,5 @@
-import { FileText, Code, CheckCircle } from 'lucide-react';
-import { Exercise } from '../data/exercises';
+import { FileText,CheckCircle } from 'lucide-react';
+import { Exercise } from '../../data/exercises';
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -14,8 +14,7 @@ export default function ExerciseCard({ exercise, onClick, isCompleted }: Exercis
         return <CheckCircle className="w-5 h-5" />;
       case 'quiz':
         return <FileText className="w-5 h-5" />;
-      case 'code':
-        return <Code className="w-5 h-5" />;
+      
     }
   };
 
@@ -25,8 +24,7 @@ export default function ExerciseCard({ exercise, onClick, isCompleted }: Exercis
         return 'Multiple Choice';
       case 'quiz':
         return 'Text Answer';
-      case 'code':
-        return 'Code Exercise';
+      
     }
   };
 

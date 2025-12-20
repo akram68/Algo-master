@@ -1,27 +1,30 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/Home/Header";
+import Footer from "./components/Home/Footer";
 import Home from "./pages/Home";
-import Courses from "./pages/Courses";
-import CourseDetail from "./pages/CourseDetail";
-import Exercises from "./pages/Exercises";
+import Courses from "./pages/Course/Course";
+import CourseDetail from "./pages/Course/CourseDetail";
+import Exercises from "./pages/Exercice/Exercises";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PanelEns from "./pages/ens-panel/PanelEns";
+import ScrollToTop from "./components/Scroll/ScrollToTop";
 
 function AppContent() {
   const location = useLocation();
 
   // Routes sans header/footer
-  const noLayoutRoutes = ["/login", "/signup", "/Panelens"];
-  const hideLayout = noLayoutRoutes.includes(location.pathname);
+  const hideLayout = location.pathname.startsWith("/Panelens")
+  || location.pathname === "/login"
+  || location.pathname === "/signup";
 
   return (
     <div className="min-h-screen flex flex-col">
+      <ScrollToTop />
       {!hideLayout && <Header />}
-
+      
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />

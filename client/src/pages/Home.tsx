@@ -1,11 +1,11 @@
-import { BookOpen, Users, Award, ArrowRight, Zap } from "lucide-react";
+import { BookOpen, Users, Award, ArrowRight} from "lucide-react";
 import { Link } from "react-router-dom";
 //import StatsCard from "../components/StatsCard";
-import TestimonialCard from "../components/TestimonialCard";
+import TestimonialCard from "../components/Home/TestimonialCard";
 import { testimonials } from "../data/testimonials";
 //import { courses } from "../data/courses";
 //import { exercises } from "../data/exercises";
-import StatsSection from "../components/StatsSection";
+import StatsSection from "../components/Home/StatsSection";
 
 export default function Home() {
   return (
@@ -60,7 +60,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 animate-fade-in">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Ce que disent les étudiants
+              Ce que disent les utilisateurs
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Des avis réels d’étudiants et d’enseignants satisfaits
