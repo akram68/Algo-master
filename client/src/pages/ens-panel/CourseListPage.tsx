@@ -1,76 +1,150 @@
-import { useState, useMemo } from "react";
-import { useCourses } from "../../hooks/UseCourses";
-import CourseToolbar from "../../components/ens-panel/Course/CourseToolBar";
-import CourseFilters from "../../components/ens-panel/Course/CourseFilters";
-import CourseList from "../../components/ens-panel/Course/CourseList";
-import CourseModal from "../../components/ens-panel/Course/CourseModal";
-import { Course } from "../../data/courses";
-
-const PAGE_SIZE = 6;
+// pages/ens-panel/CourseListPage.tsx
+import { useState } from 'react';
+import { useCourses } from '../../hooks/UseCourses';
+import { Course } from '../../data/courses';
+import CourseHeader from '../../components/ens-panel/Course/CourseHeader';
+import CourseFilters from '../../components/ens-panel/Course/CourseFilters';
+//import CourseCard from '../../../components/ens-panel/Course/CourseCard';
+import CourseList from '../../components/ens-panel/Course/CourseList';
+import CourseModal from '../../components/ens-panel/Course/CourseModal';
+import CoursePreview from '../../components/ens-panel/Course/CoursePreview';
 
 function CourseListPage() {
-  const { courses, addOrUpdateCourse, deleteCourse, searchCourses, filterByLevel, sortCourses } = useCourses();
+  const {
+    filteredCourses,
+    searchQuery,
+    setSearchQuery,
+    levelFilter,
+    setLevelFilter,
+    sortField,
+    sortOrder,
+    toggleSort,
+    addCourse,
+    updateCourse,
+    deleteCourse,
+    stats
+  } = useCourses();
+
   const [showModal, setShowModal] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [levelFilter, setLevelFilter] = useState("all");
-  const [sortField, setSortField] = useState<"title" | "duration">("title");
-  const [sortAsc, setSortAsc] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [previewCourse, setPreviewCourse] = useState<Course | null>(null);
 
-  // Filtrage, recherche, tri
-  const filteredCourses = useMemo(() => {
-    let result = searchQuery ? searchCourses(searchQuery) : courses;
-    result = levelFilter !== "all" ? filterByLevel(levelFilter) : result;
-    result = sortCourses(sortField, sortAsc);
-    return result;
-  }, [courses, searchQuery, levelFilter, sortField, sortAsc]);
+  const handleAdd = () => {
+    setEditingCourse(null);
+    setShowModal(true);
+  };
 
-  const pageCount = Math.ceil(filteredCourses.length / PAGE_SIZE);
-  const paginatedCourses = filteredCourses.slice((currentPage-1)*PAGE_SIZE, currentPage*PAGE_SIZE);
+  const handleEdit = (course: Course) => {
+    setEditingCourse(course);
+    setShowModal(true);
+  };
+
+  const handlePreview = (course: Course) => {
+    setPreviewCourse(course);
+    setShowPreview(true);
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')) {
+      deleteCourse(id);
+    }
+  };
+
+  const handleSave = (course: Course) => {
+    if (editingCourse) {
+      updateCourse(course);
+    } else {
+      addCourse(course);
+    }
+    setShowModal(false);
+  };
 
   return (
-    <div className="p-6 space-y-6">
-      <CourseToolbar
-        onAdd={() => { setEditingCourse(null); setShowModal(true); }}
+    <div className="pb-8">
+      <CourseHeader 
+        onAdd={handleAdd}
         searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
+        onSearchChange={setSearchQuery}
+        stats={stats}
       />
 
-      <CourseFilters
+      <CourseFilters 
         levelFilter={levelFilter}
-        setLevelFilter={setLevelFilter}
+        onLevelFilterChange={setLevelFilter}
         sortField={sortField}
-        setSortField={setSortField}
-        sortAsc={sortAsc}
-        setSortAsc={setSortAsc}
+        sortOrder={sortOrder}
+        onSortChange={toggleSort}
       />
 
-      <CourseList
-        courses={paginatedCourses}
-        onEdit={(c) => { setEditingCourse(c); setShowModal(true); }}
-        onDelete={deleteCourse}
-      />
-
-      {/* Pagination */}
-      <div className="flex justify-center gap-2 mt-6">
-        {Array.from({ length: pageCount }, (_, i) => i+1).map(p => (
-          <button
-            key={p}
-            onClick={() => setCurrentPage(p)}
-            className={`px-3 py-1 rounded ${currentPage===p?'bg-blue-600 text-white':'bg-gray-100'}`}
-          >
-            {p}
-          </button>
-        ))}
+      {/* Résultats */}
+      <div className="mb-6 flex items-center justify-between">
+        <div className="text-gray-600">
+          {filteredCourses.length} cours{filteredCourses.length !== 1 ? '' : ''} trouvé{filteredCourses.length !== 1 ? 's' : ''}
+        </div>
+        <div className="text-sm text-gray-500">
+          {stats.totalDuration} semaines de formation
+        </div>
       </div>
 
+      {filteredCourses.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
+          <div className="text-gray-400 text-6xl mb-4">📚</div>
+          <h3 className="text-xl font-medium text-gray-900 mb-2">Aucun cours trouvé</h3>
+          <p className="text-gray-500 mb-6">
+            {searchQuery 
+              ? `Aucun cours correspondant à "${searchQuery}"`
+              : levelFilter !== 'all'
+                ? `Aucun cours de niveau ${levelFilter}`
+                : 'Commencez par créer votre premier cours !'
+            }
+          </p>
+          {searchQuery || levelFilter !== 'all' ? (
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                setLevelFilter('all');
+              }}
+              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Réinitialiser les filtres
+            </button>
+          ) : (
+            <button
+              onClick={handleAdd}
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl font-medium"
+            >
+              Créer votre premier cours
+            </button>
+          )}
+        </div>
+      ) : (
+        <CourseList
+          courses={filteredCourses}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onPreview={handlePreview}
+        />
+      )}
+
+      {/* Modal de création/édition */}
       <CourseModal
         show={showModal}
         editingCourse={editingCourse}
         onClose={() => setShowModal(false)}
-        onSave={(course) => { addOrUpdateCourse(course); setShowModal(false); }}
+        onSave={handleSave}
       />
+
+      {/* Modal d'aperçu */}
+      {showPreview && previewCourse && (
+        <CoursePreview
+          course={previewCourse}
+          onClose={() => {
+            setShowPreview(false);
+            setPreviewCourse(null);
+          }}
+        />
+      )}
     </div>
   );
 }
