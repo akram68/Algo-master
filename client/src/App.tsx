@@ -14,17 +14,20 @@ import ScrollToTop from "./components/Scroll/ScrollToTop";
 
 function AppContent() {
   const location = useLocation();
+  const pathname = location.pathname.toLowerCase();
 
-  // Routes sans header/footer
-  const hideLayout = location.pathname.startsWith("/Panelens")
-  || location.pathname === "/login"
-  || location.pathname === "/signup";
+  // routes SANS header / footer
+  const hideLayout =
+    pathname.startsWith("/panelens") ||
+    pathname === "/login" ||
+    pathname === "/signup";
 
   return (
     <div className="min-h-screen flex flex-col">
       <ScrollToTop />
+
       {!hideLayout && <Header />}
-      
+
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -35,7 +38,9 @@ function AppContent() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/Panelens" element={<PanelEns />} />
+
+          {/* Panel enseignant + sous-routes */}
+          <Route path="/panelens/*" element={<PanelEns />} />
         </Routes>
       </main>
 
